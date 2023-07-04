@@ -19,3 +19,19 @@ So I had a different idea - lets check what the average job description is and h
 -   Filter out the important stuff (use an LLM :smiley_cat:)
 
 -   Analyze the results, work out what the descriptions require and hack your CV accordingly :scissors:
+
+
+## Get the data
+I will be looking for Data Analyst job posts from Switzerland. I'll use [Adzuna API](https://www.adzuna.ch/).
+```{r}
+
+library(httr)
+library(jsonlite)
+
+test <- GET("http://api.adzuna.com/v1/api/jobs/gb/search/1?app_id=xxx&app_key=xxx&results_per_page=20&what=javascript%20developer&content-type=application/json")
+
+test[10]
+
+```
+
+
