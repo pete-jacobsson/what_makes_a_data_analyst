@@ -3,7 +3,7 @@
     "path": "~/Documents/GitHub/what_makes_a_data_analyst/README.md",
     "project_path": "README.md",
     "type": "markdown",
-    "hash": "2394215456",
+    "hash": "15562438",
     "contents": "",
     "dirty": false,
     "created": 1688463618480.0,
@@ -12,15 +12,20 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "9,201",
-        "scrollLine": "0"
+        "cursorPosition": "13,0",
+        "scrollLine": "0",
+        "rmdVisualMode": "true",
+        "rmdVisualModeLocation": "1283:158",
+        "rmdVisualWrapConfigured": "true",
+        "docOutlineVisible": "0",
+        "rmdVisualCollapsedChunks": ""
     },
     "folds": "",
-    "lastKnownWriteTime": 1688464038,
+    "lastKnownWriteTime": 1688464291,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1688464038021,
+    "last_content_update": 1688464291258,
     "read_only": false,
     "read_only_alternatives": []
 }

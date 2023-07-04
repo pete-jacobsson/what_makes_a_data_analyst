@@ -1,0 +1,21 @@
+---
+title: "The average Data Analyst job description"
+author: "Pete Jacobsson"
+from: markdown+emoji
+format:
+  html:
+    theme: simplex
+    css: styles.css
+    sansfont: Corbel
+    mainfont: Cambria
+---
+
+Hello everyone! The purpose of this little project is to work out what makes an average data analyst. If, like me, you've been around for a few years longer than the end of your undergraduate degree, you might also have the problem of how to figure out what to *cut* from your CV. Where this gets really interesting is the soft skills: should I push communication, or problem solving for example? Now, when applying for a job with a known job description this is not an issue - you just hack away things that match that description least. But what about the CV you take to conferences, networking events, or send to recruiters? If you're anything like me, you know that six pages is way too long, but what are the things to hack away? In principle, you can ask for a CV writing service advice. But that will cost you, and if you're a scrooge (like myself), paying is a deal breaker.
+
+So I had a different idea - lets check what the average job description is and hack away things to match it. How to get the typical job description?
+
+-   Get a lot of job descriptions (use API :grinning:)
+
+-   Filter out the important stuff (use an LLM :smiley_cat:)
+
+-   Analyze the results, work out what the descriptions require and hack your CV accordingly :scissors:
