@@ -23,14 +23,37 @@ So I had a different idea - lets check what the average job description is and h
 
 ## Get the data
 I will be looking for Data Analyst job posts from Switzerland. I'll use [Adzuna API](https://www.adzuna.ch/).
-```{r}
 
+The core of the API request looks something like this:
+```{r}
 library(httr)
 library(jsonlite)
 
-test <- GET("http://api.adzuna.com/v1/api/jobs/gb/search/1?app_id=xxx&app_key=xxx&results_per_page=20&what=javascript%20developer&content-type=application/json")
+## Write a function to get any given page. After that I can just iterate while there are still jobs to find :)
 
-test[10]
+get_adzuna_api <- function(api_id, api_key, page, key_words) { #API ID and key are variables, so that they can remain secret
+  
+  key_words <- stringr::str_c(key_words[1], "%20", key_words[2]) #Can only take two key words. All needed for most data professions
+  api_call_string <- stringr::str_c("http://api.adzuna.com/v1/api/jobs/ch/search/",  ##If I wanted to change country, it would be on this line
+                                    page, "?app_id=", api_id, "&app_key=", api_key,
+                                    "&results_per_page=20&what=", key_words,
+                                    "&max_days_old=730&salary_include_unknown=1&content-type=application/json")
+  api_return <- GET(api_call_string)
+  api_return_text <- content(api_return, "text")
+  api_return_df <- jsonlite::fromJSON(api_return_text)
+  
+  api_return_df$results
+}
+
+
+
+test <- get_adzuna_api(
+  readLines("/home/pete/Documents/adzuna_api.txt")[1], 
+  readLines("/home/pete/Documents/adzuna_api.txt")[2], 1,
+  c("data", "analyst"))
+
+
+test$description[1]
 
 ```
 

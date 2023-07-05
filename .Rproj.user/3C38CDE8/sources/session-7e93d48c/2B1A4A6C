@@ -1,24 +1,24 @@
 {
-    "id": "307565C1",
-    "path": "~/Documents/GitHub/temporary_blog/index.qmd",
+    "id": "2B1A4A6C",
+    "path": "~/Documents/GitHub/gpt-rejection-letters/rejection_letters.qmd",
     "project_path": null,
     "type": "quarto_markdown",
-    "hash": "2462144531",
+    "hash": "0",
     "contents": "",
     "dirty": false,
-    "created": 1688464266907.0,
+    "created": 1688550898124.0,
     "source_on_save": false,
-    "relative_order": 3,
+    "relative_order": 7,
     "properties": {
         "source_window_id": "",
         "Source": "Source"
     },
     "folds": "",
-    "lastKnownWriteTime": 1686908995,
+    "lastKnownWriteTime": 1685354257,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1686908995,
+    "last_content_update": 1685354257,
     "read_only": false,
     "read_only_alternatives": []
 }
