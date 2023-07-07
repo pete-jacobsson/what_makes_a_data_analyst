@@ -21,11 +21,12 @@ So I had a different idea - lets check what the average job description is and h
 -   Analyze the results, work out what the descriptions require and hack your CV accordingly :scissors:
 
 
-## Get the data
+## Get the data I: API the websties
 I will be looking for Data Analyst job posts from Switzerland. I'll use [Adzuna API](https://www.adzuna.ch/).
 
 The core of the API request looks something like this:
 ```{r}
+##This chunk is concerned with getting the API function working
 library(httr)
 library(jsonlite)
 
@@ -44,17 +45,63 @@ get_adzuna_api <- function(api_id, api_key, page, key_words) { #API ID and key a
   
   api_return_df$results
 }
+```
 
 
-
+```{r}
+## Test the function
 test <- get_adzuna_api(
   readLines("/home/pete/Documents/adzuna_api.txt")[1], 
-  readLines("/home/pete/Documents/adzuna_api.txt")[2], 1,
+  readLines("/home/pete/Documents/adzuna_api.txt")[2], 10,
   c("data", "analyst"))
 
 
-test$description[1]
-
+test$location$display_name
 ```
+
+
+```{r}
+## This code block is about removing unwanted columns from the APi response and renaming other ones.
+## Functionalizing for easier integration into the automated pipeline downstream
+
+clean_adzuna_response <- function(adzuna_response) {
+  response_cleaned <- data.frame(
+    date_posted = adzuna_response$created,
+    job_title = adzuna_response$title,
+    company = adzuna_response$company$display_name,
+    location = adzuna_response$location$display_name,
+    website = adzuna_response$redirect_url
+  )
+  
+  response_cleaned
+}
+```
+
+```{r}
+##Test clean_adzuna_response
+test2 <- clean_adzuna_response(test)
+```
+
+
+
+
+## Get the Data II: web-scrape
+Because Adzuna API provides only snippets, we don't get the actual job descriptions to pass to CHat API for analysis. Now, what we do get, is links tio the Adzuna website. So what we can do to get the relevant data is to web scrape the list of pages provided and add the results to the outcomes table
+```{r}
+##Lets get a URL to visit
+
+test2$website[1]
+```
+
+```{r}
+### At first, this will be a mess of re-learning how to web scrape :P
+library(rvest)
+
+adzuna_html_response <- read_html(test2$website[1])
+
+adzuna_p_tags <- adzuna_html_response %>%
+  html_nodes("adp-body mx-4 mb-4 text-sm md:mx-0 md:text-base md:mb-0")
+```
+
 
 
