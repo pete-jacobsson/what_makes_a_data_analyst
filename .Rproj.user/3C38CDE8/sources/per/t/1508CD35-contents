@@ -109,12 +109,20 @@ adzuna_body <- adzuna_html_response %>%
   html_nodes("p")
 
 adzuna_body[20][1]
-XML::toString.XMLNode(adzuna_body[20])
+XML::toString.XMLNode(adzuna_body[5])
+length(adzuna_body)
+html_text(adzuna_body[1])
+
 adzuna_description <- ""
 
-for (node in adzuna_body) {
-  
+for (i in 1:length(adzuna_body)) {
+  adzuna_description <- str_c(adzuna_description, html_text(adzuna_body[i]))
 }
+
+
+
+adzuna_description
+
 ```
 
 
