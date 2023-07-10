@@ -1,6 +1,4 @@
 "0","##This chunk is concerned with getting the API function working"
-"0","library(httr)"
-"0","library(jsonlite)"
 "0",""
 "0","## Write a function to get any given page. After that I can just iterate while there are still jobs to find :)"
 "0",""
