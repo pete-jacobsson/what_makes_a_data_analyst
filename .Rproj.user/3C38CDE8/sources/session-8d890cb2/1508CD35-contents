@@ -105,8 +105,6 @@ test2$website[4]
 ### At first, this will be a mess of re-learning how to web scrape :P
 
 
-adzuna_html_response <- read_html(test2$website[4])
-
 parse_adzuna_data <- function (adzuna_http){
   adzuna_html_response <- read_html(adzuna_http) #Get the website
   adzuna_body <- adzuna_html_response %>% #Extract the body of the job ad
@@ -118,8 +116,26 @@ parse_adzuna_data <- function (adzuna_http){
 
 ```
 ```{r}
-##Test the function: run for the length of a whole DF 
+##Test the function: run for the length of a whole DF
+##Use for loop to ensure spacing between website hits
+##Pass if test_vector contains 15 long extracted strings
+
+### Commented out - don't want to run loops hitting people's websites by accident :)
+# test_vector <- c()
+# 
+# for (i in 1:nrow(test2)) { #test2 contains the readings from the newest set of previous tests
+#   adzuna_description <- parse_adzuna_data(test2$website[i])
+#   test_vector <- c(test_vector, adzuna_description)
+#   Sys.sleep(30)
+# }
+
+for (item in test_vector) {
+  item_trunc <- str_trunc(item, 50)
+  print(item_trunc)
+}
 ```
 
+We have a working webscrape. Now time to start getting the relevant skills.
 
+## Get the data III Skills and experience extraction with Chat GPT
 
