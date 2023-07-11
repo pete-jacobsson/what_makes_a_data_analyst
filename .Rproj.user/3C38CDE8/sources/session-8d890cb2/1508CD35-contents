@@ -13,7 +13,7 @@ format:
 ```{r}
 library(tidyverse)
 library(jsonlite)
-library(httr)
+library(rvest)
 ```
 
 Hello everyone! The purpose of this little project is to work out what makes an average data analyst. If, like me, you've been around for a few years longer than the end of your undergraduate degree, you might also have the problem of how to figure out what to *cut* from your CV. Where this gets really interesting is the soft skills: should I push communication, or problem solving for example? Now, when applying for a job with a known job description this is not an issue - you just hack away things that match that description least. But what about the CV you take to conferences, networking events, or send to recruiters? If you're anything like me, you know that six pages is way too long, but what are the things to hack away? In principle, you can ask for a CV writing service advice. But that will cost you, and if you're a scrooge (like myself), paying is a deal breaker.
@@ -76,7 +76,9 @@ clean_adzuna_response <- function(adzuna_response) {
     company = adzuna_response$company$display_name,
     location = adzuna_response$location$display_name,
     website = adzuna_response$redirect_url
-  )
+  ) %>%
+    filter(str_detect(website, "details")) #Adzuna links quite a few instances of external job boards
+  
   
   response_cleaned
 }
@@ -101,28 +103,22 @@ test2$website[4]
 
 ```{r}
 ### At first, this will be a mess of re-learning how to web scrape :P
-library(rvest)
+
 
 adzuna_html_response <- read_html(test2$website[4])
 
-adzuna_body <- adzuna_html_response %>%
-  html_nodes("p")
-
-adzuna_body[20][1]
-XML::toString.XMLNode(adzuna_body[5])
-length(adzuna_body)
-html_text(adzuna_body[1])
-
-adzuna_description <- ""
-
-for (i in 1:length(adzuna_body)) {
-  adzuna_description <- str_c(adzuna_description, html_text(adzuna_body[i]))
+parse_adzuna_data <- function (adzuna_http){
+  adzuna_html_response <- read_html(adzuna_http) #Get the website
+  adzuna_body <- adzuna_html_response %>% #Extract the body of the job ad
+    html_nodes(".adp-body") %>%
+    html_text()
+  
+  adzuna_body
 }
 
-
-
-adzuna_description
-
+```
+```{r}
+##Test the function: run for the length of a whole DF 
 ```
 
 
