@@ -14,6 +14,7 @@ format:
 library(tidyverse)
 library(jsonlite)
 library(rvest)
+library(reticulate)
 ```
 
 Hello everyone! The purpose of this little project is to work out what makes an average data analyst. If, like me, you've been around for a few years longer than the end of your undergraduate degree, you might also have the problem of how to figure out what to *cut* from your CV. Where this gets really interesting is the soft skills: should I push communication, or problem solving for example? Now, when applying for a job with a known job description this is not an issue - you just hack away things that match that description least. But what about the CV you take to conferences, networking events, or send to recruiters? If you're anything like me, you know that six pages is way too long, but what are the things to hack away? In principle, you can ask for a CV writing service advice. But that will cost you, and if you're a scrooge (like myself), paying is a deal breaker.
@@ -138,4 +139,46 @@ for (item in test_vector) {
 We have a working webscrape. Now time to start getting the relevant skills.
 
 ## Get the data III Skills and experience extraction with Chat GPT
+
+The objective here is to develop a GPT prompt that will take on a string of letters from the job descripitons, extract relevant data (skills and experience, divided into different categories - as well as translate things into English beforehand when relevant), and return a .json file for each prompt run. In an ideal world I'd run this multiple times for each job description using a high temperature setting on the GPT - but I have only a free account and I also lack the days and weeks to do it through the free version
+
+```{python}
+### Following the method from this course: https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/
+import openai
+import os
+import time
+
+##COMMENT UP THIS CODE!!!
+with open('/home/pete/Documents/gpt_key.txt') as t:
+  openai.api_key = t.readlines()[0].strip("\n")
+
+
+def get_completion(prompt, model="gpt-3.5-turbo", temperature = 0):
+    messages = [{"role": "user", "content": prompt}]
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=messages,
+        temperature=temperature, # this is the degree of randomness of the model's output
+    )
+    return response.choices[0].message["content"]
+
+```
+
+```{python}
+###Test connection
+get_completion("Can you please tell me if I'm connected to GPT?")
+```
+
+```{python}
+### Now lets pass a job description to Chat GPT and build a prompt
+
+adzuna_description = r.test_vector[7]
+print(adzuna_description)
+
+adzuna_summary = get_completion(
+  "Dear Chat GPT, could you please conduct  translate any non-English sections of the text in square brackets into English? [" + adzuna_description +"]"
+)
+
+print(adzuna_summary)
+```
 
