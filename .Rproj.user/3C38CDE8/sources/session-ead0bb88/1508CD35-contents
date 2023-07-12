@@ -10,7 +10,8 @@ format:
     mainfont: Cambria
 ---
 
-```{r}
+```{r, include = FALSE}
+library(httr)
 library(tidyverse)
 library(jsonlite)
 library(rvest)
@@ -37,11 +38,13 @@ The core of the API request looks something like this:
 
 ## Write a function to get any given page. After that I can just iterate while there are still jobs to find :)
 
-get_adzuna_api <- function(api_id, api_key, page, key_words) { #API ID and key are variables, so that they can remain secret
+get_adzuna_api <- function(api_id, api_key, page, 
+                           key_words = c("data", "analyst"), country = "ch") { #API ID and key are variables, so that they can remain secret
   
   key_words <- stringr::str_c(key_words[1], "%20", key_words[2]) #Can only take two key words. All needed for most data professions
-  api_call_string <- stringr::str_c("http://api.adzuna.com/v1/api/jobs/ch/search/",  ##If I wanted to change country, it would be on this line
-                                    page, "?app_id=", api_id, "&app_key=", api_key,
+  api_call_string <- stringr::str_c("http://api.adzuna.com/v1/api/jobs/", 
+                                    country, "/search/", page, "?app_id=", 
+                                    api_id, "&app_key=", api_key,
                                     "&results_per_page=20&what=", key_words,
                                     "&max_days_old=730&salary_include_unknown=1&content-type=application/json")
   api_return <- GET(api_call_string)
@@ -57,8 +60,7 @@ get_adzuna_api <- function(api_id, api_key, page, key_words) { #API ID and key a
 ## Test the function
 test <- get_adzuna_api(
   readLines("/home/pete/Documents/adzuna_api.txt")[1], 
-  readLines("/home/pete/Documents/adzuna_api.txt")[2], 10,
-  c("data", "analyst"))
+  readLines("/home/pete/Documents/adzuna_api.txt")[2], 10)
 
 
 test$location$display_name
@@ -116,6 +118,8 @@ parse_adzuna_data <- function (adzuna_http){
 }
 
 ```
+
+
 ```{r}
 ##Test the function: run for the length of a whole DF
 ##Use for loop to ensure spacing between website hits
@@ -169,10 +173,15 @@ def get_completion(prompt, model="gpt-3.5-turbo", temperature = 0):
 get_completion("Can you please tell me if I'm connected to GPT?")
 ```
 
+```{r}
+##Get a return to work with for dev
+
+```
+
+
 ```{python}
 ### Now lets pass a job description to Chat GPT and build a prompt
 
-adzuna_description = r.test_vector[7]
 print(adzuna_description)
 
 adzuna_summary = get_completion(
