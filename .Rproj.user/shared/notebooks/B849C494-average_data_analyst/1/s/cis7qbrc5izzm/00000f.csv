@@ -1,0 +1,32 @@
+"0","adzuna_summary = get_completion("
+"0","  ""Dear Chat GPT, could you please conduct the following actions on the test in square brackets: Identify all skills, characteristics and qualifications required for the job and return them as itemized points in English. Split those into individual skills. Group into soft skills, technical skills and qualifications. Provide the return in JSON format please! ["" + adzuna_description +""]"""
+"0",")"
+"0",""
+"0","print(adzuna_summary)"
+"1","{
+  ""skills"": {
+    ""soft_skills"": [
+      ""Strong analytical and problem-solving skills"",
+      ""Ability to adapt to a changing environment"",
+      ""Excellent communication and collaboration skills"",
+      ""Ability to work independently and as part of a team""
+    ],
+    ""technical_skills"": [
+      ""SQL"",
+      ""Excel"",
+      ""Python"",
+      ""R"",
+      ""Tableau"",
+      ""Power BI"",
+      ""QlikView"",
+      ""AWS Redshift"",
+      ""Google BigQuery""
+    ],
+    ""qualifications"": [
+      ""Min. Bachelor's degree in a quantitative field such as statistics, mathematics, computer science, or engineering"",
+      ""Min. 3-5 years of experience in a Data Analyst or Data Scientist role"",
+      ""Fluency in German and English (min. B2)""
+    ]
+  }
+}
+"

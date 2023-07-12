@@ -1,3 +1,4 @@
+"0","### Following the method from this course: https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/"
 "0","import openai"
 "0","import os"
 "0","import time"

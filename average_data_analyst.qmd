@@ -175,19 +175,32 @@ get_completion("Can you please tell me if I'm connected to GPT?")
 
 ```{r}
 ##Get a return to work with for dev
-
+test3 <- parse_adzuna_data(test2$website[2])
+test3
 ```
 
 
 ```{python}
 ### Now lets pass a job description to Chat GPT and build a prompt
-
+adzuna_description = r.test3
 print(adzuna_description)
+```
 
+```{python}
 adzuna_summary = get_completion(
-  "Dear Chat GPT, could you please conduct  translate any non-English sections of the text in square brackets into English? [" + adzuna_description +"]"
+  "Dear Chat GPT, could you please conduct the following actions on the test in square brackets: Identify all skills, characteristics and qualifications required for the job and return them as itemized points in English. Split those into individual skills. Group into soft skills, technical skills and qualifications. Provide the return in JSON format please! [" + adzuna_description +"]"
 )
 
 print(adzuna_summary)
 ```
+So we have a working prompt that gives us returns in a JSON format. This is almost the "get the data" bit done. Now the final part: getting the whole thing to work on a loop, so I don't need to do countless clicks.
+
+## Get the data IV: Set up the loop
+
+To set up the loop to extract the data from the Adzuna website, we need to do a few things.
+* First, we need to run the API and get the links on which to webscrape
+* Second, we need to webscrape
+* Third, we need to run the extraction of data via the GPT prompt
+* Fourth, we need to put the GPT data into something that may store it.
+
 
