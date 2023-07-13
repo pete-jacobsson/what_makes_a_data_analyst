@@ -203,4 +203,40 @@ To set up the loop to extract the data from the Adzuna website, we need to do a 
 * Third, we need to run the extraction of data via the GPT prompt
 * Fourth, we need to put the GPT data into something that may store it.
 
+There are two ways of approaching this. One would be two build a function taking the whole process from start to finish and depositing the results into a designated file. The other approach is to complete each step for all the data and then iterate on the results. While I find the former approach way more aesthetically pleasing, it also brings in some unwanted complexity: the API query returns up to twenty links, which would require a somewhat more messy code.
+
+Instead, I'll go with a two step process:
+
+1. I'll run a loop to get all the API responses
+2. I will then run the scraping and GPT assessment as a single function, looping through the website addressed obtained from the API.
+
+Hence we retain some simplicity, while also ensuring that we make alternate web scraping and GPT calls, with the nice added advantage of not overburdening either side, or having to loose time by introducing high Sys.sleep() values.
+
+### Execute the API calls
+
+As we do not know in advance how many relevant API pages there are in advance, here I decided to use a while loop that terminates when no new results are being retrieved.
+```{r}
+
+n_responses <- 20
+page <- 1
+adzuna_api_returns_raw_13jul23 <- data.frame()
+
+while (n_responses > 0) {
+  
+  current_response <- get_adzuna_api(
+    readLines("/home/pete/Documents/adzuna_api.txt")[1], 
+    readLines("/home/pete/Documents/adzuna_api.txt")[2], page) ##Run the API.
+  
+  adzuna_api_returns_raw_13jul23 <- rbind(adzuna_api_returns_raw_13jul23,
+                                          current_response) ## Bind to general results table.
+  
+  page <- page + 1 #Increase the page number.
+  n_responses <-nrow(current_response) ## Check response count for the purposes of running the loop.
+  
+  Sys.sleep(3) ##This is to make sure that we do not hit the 25 hits per minute limit on the API.
+}
+
+```
+
+
 
