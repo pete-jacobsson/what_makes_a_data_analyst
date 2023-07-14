@@ -3,7 +3,7 @@
     "path": "~/Documents/GitHub/what_makes_a_data_analyst/average_data_analyst.qmd",
     "project_path": "average_data_analyst.qmd",
     "type": "quarto_markdown",
-    "hash": "3245969758",
+    "hash": "1814447885",
     "contents": "",
     "dirty": false,
     "created": 1688464161938.0,
@@ -13,8 +13,8 @@
         "tempName": "Untitled1",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "202,0",
-        "scrollLine": "196",
+        "cursorPosition": "278,21",
+        "scrollLine": "275",
         "rmdVisualMode": "false",
         "rmdVisualWrapConfigured": "true",
         "docOutlineVisible": "1",
@@ -22,11 +22,11 @@
         "rmdVisualModeLocation": "1338:187"
     },
     "folds": "",
-    "lastKnownWriteTime": 1689326104,
+    "lastKnownWriteTime": 1689329401,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1689326104271,
+    "last_content_update": 1689329401515,
     "read_only": false,
     "read_only_alternatives": []
 }

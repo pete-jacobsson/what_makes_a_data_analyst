@@ -264,8 +264,28 @@ Now lets turn to the next step: we want to wrap a function around the webscrape 
 ```{r}
 execute_scrape_and_prompt <- function (adzuna_address){
   adzuna_raw_return <- parse_adzuna_data(adzuna_address)
-  json_summary <- 
-  
+  py$summarize_adzuna(adzuna_raw_return) ## The py$ calls from the python side of the environment
 }
+
+```
+
+```{r}
+test5 <- execute_scrape_and_prompt(adzuna_api_returns_14jul23$website[1])
+test5
+```
+
+Now that the wrapper is written and tested, lets run the extraction loop
+```{r}
+job_details <- list()
+
+for (i in 1:nrow(adzuna_api_returns_14jul23)) {
+  json_return <- execute_scrape_and_prompt(adzuna_api_returns_14jul23$website[i])
+  job_details <- append(job_details, fromJSON(json_return))
+  
+  Sys.sleep(20) ## Given the time to webscrape and call GPT this should be redundant... but lets be polite.
+}
+
+write_rds(job_details, "job_details_14jul23.rds")
+
 ```
 
