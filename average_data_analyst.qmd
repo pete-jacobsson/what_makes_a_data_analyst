@@ -187,12 +187,23 @@ print(adzuna_description)
 ```
 
 ```{python}
-adzuna_summary = get_completion(
-  "Dear Chat GPT, could you please conduct the following actions on the test in square brackets: Identify all skills, characteristics and qualifications required for the job and return them as itemized points in English. Split those into individual skills. Group into soft skills, technical skills and qualifications. Provide the return in JSON format please! [" + adzuna_description +"]"
-)
 
-print(adzuna_summary)
+def summarize_adzuna(adzuna_description):
+  adzuna_summary = get_completion(
+    "Dear Chat GPT, could you please conduct the following actions on the test in square brackets: Identify all skills, characteristics and qualifications        required for the job and return them as itemized points in English. Split those into individual skills. Group into soft skills, technical skills and qualifications. Provide the return in JSON format please! [" + adzuna_description +"]"
+  )
+  return(adzuna_summary)
+
+
 ```
+
+```{python}
+test4 =  summarize_adzuna(r.test3)
+print(test4)
+```
+
+
+
 So we have a working prompt that gives us returns in a JSON format. This is almost the "get the data" bit done. Now the final part: getting the whole thing to work on a loop, so I don't need to do countless clicks.
 
 ## Get the data IV: Set up the loop
@@ -240,6 +251,21 @@ while (n_responses > 0) {
 
 ```
 
-So this ended in a crash-out when the API returned empty. Normally this would be a bad things, but at this stage all I needed was the loop to finish - which it did. We now have a data frame containing the returns
+So this ended in a crash-out when the API returned empty. Normally this would be a bad things, but at this stage all I needed was the loop to finish - which it did. We now have a data frame containing some basic data on the jobs: date posted, job title, company name, location within Switzerland and... the link to the description, all ready for scraping. Now lets set up the reminder of the pipeline. Before moving on, lets save the results.
+```{r}
+write_rds(adzuna_api_returns_14jul23, "adzuna_api_returns_14jul23.rds") ## Getting to use RDS format a bit more often.
+```
 
+
+
+### Webscraping and analysis with GPT
+
+Now lets turn to the next step: we want to wrap a function around the webscrape and the GPT ask.
+```{r}
+execute_scrape_and_prompt <- function (adzuna_address){
+  adzuna_raw_return <- parse_adzuna_data(adzuna_address)
+  json_summary <- 
+  
+}
+```
 

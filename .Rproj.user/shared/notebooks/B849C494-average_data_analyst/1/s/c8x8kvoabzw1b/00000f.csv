@@ -1,0 +1,30 @@
+"0","print(test4)
+"
+"1","{
+  ""skills"": {
+    ""soft_skills"": [
+      ""Strong analytical and problem-solving skills"",
+      ""Ability to adapt to a changing environment"",
+      ""Excellent communication and collaboration skills"",
+      ""Ability to work independently and as part of a team""
+    ],
+    ""technical_skills"": [
+      ""SQL"",
+      ""Excel"",
+      ""Python"",
+      ""R"",
+      ""Tableau"",
+      ""Power BI"",
+      ""QlikView"",
+      ""AWS Redshift"",
+      ""Google BigQuery""
+    ],
+    ""qualifications"": [
+      ""Min. Bachelor's degree in a quantitative field such as statistics, mathematics, computer science, or engineering"",
+      ""Min. 3-5 years of experience in a Data Analyst or Data Scientist role"",
+      ""Fluency in German and English (min. B2)""
+    ]
+  }
+}
+"
+"0",""
