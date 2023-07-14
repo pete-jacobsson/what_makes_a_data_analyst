@@ -217,9 +217,9 @@ Hence we retain some simplicity, while also ensuring that we make alternate web 
 As we do not know in advance how many relevant API pages there are in advance, here I decided to use a while loop that terminates when no new results are being retrieved.
 ```{r}
 
-n_responses <- 20
-page <- 1
-adzuna_api_returns_raw_13jul23 <- data.frame()
+n_responses <- 20 ## Lets not turn off the loop before we start
+page <- 1 ## Start at page 1
+adzuna_api_returns_14jul23 <- data.frame()  ##Take note of date when responses collected
 
 while (n_responses > 0) {
   
@@ -227,16 +227,19 @@ while (n_responses > 0) {
     readLines("/home/pete/Documents/adzuna_api.txt")[1], 
     readLines("/home/pete/Documents/adzuna_api.txt")[2], page) ##Run the API.
   
-  adzuna_api_returns_raw_13jul23 <- rbind(adzuna_api_returns_raw_13jul23,
-                                          current_response) ## Bind to general results table.
-  
   page <- page + 1 #Increase the page number.
   n_responses <-nrow(current_response) ## Check response count for the purposes of running the loop.
+  
+  current_response <- clean_adzuna_response(current_response) ## Different API returns give different numbers of columns. This should standardize and prevent crashes.
+  
+  adzuna_api_returns_14jul23 <- rbind(adzuna_api_returns_14jul23,
+                                          current_response) ## Bind to general results table.
   
   Sys.sleep(3) ##This is to make sure that we do not hit the 25 hits per minute limit on the API.
 }
 
 ```
 
+So this ended in a crash-out when the API returned empty. Normally this would be a bad things, but at this stage all I needed was the loop to finish - which it did. We now have a data frame containing the returns
 
 
