@@ -1,5 +1,5 @@
 "0","execute_scrape_and_prompt <- function (adzuna_address){"
 "0","  adzuna_raw_return <- parse_adzuna_data(adzuna_address)"
-"0","  py$summarize_adzuna(adzuna_raw_return)"
+"0","  py$summarize_adzuna(adzuna_raw_return) ## The py$ calls from the python side of the environment"
 "0","}"
 "0",""

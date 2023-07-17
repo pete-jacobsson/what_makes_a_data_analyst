@@ -276,16 +276,27 @@ test5
 
 Now that the wrapper is written and tested, lets run the extraction loop
 ```{r}
+adzuna_api_returns_14jul23 <- readRDS("adzuna_api_returns_14jul23.rds")
 job_details <- list()
 
 for (i in 1:nrow(adzuna_api_returns_14jul23)) {
-  json_return <- execute_scrape_and_prompt(adzuna_api_returns_14jul23$website[i])
-  job_details <- append(job_details, fromJSON(json_return))
+  try({   ###The try function is here in case any web scrape fails
+    json_return <- execute_scrape_and_prompt(
+      adzuna_api_returns_14jul23$website[i])
+      job_details <- append(job_details, fromJSON(json_return))
+  }, silent = TRUE
+  )
   
-  Sys.sleep(20) ## Given the time to webscrape and call GPT this should be redundant... but lets be polite.
+  Sys.sleep(30) ## Given the time to webscrape and call GPT this should be redundant... but lets be polite.
 }
 
 write_rds(job_details, "job_details_14jul23.rds")
 
 ```
+```{r}
+adzuna_api_returns_14jul23$website[i]
+json_return
+
+```
+
 
