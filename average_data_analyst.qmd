@@ -277,13 +277,29 @@ test5
 Now that the wrapper is written and tested, lets run the extraction loop
 ```{r}
 adzuna_api_returns_14jul23 <- readRDS("adzuna_api_returns_14jul23.rds")
-job_details <- list()
+skills <- c()
 
-for (i in 1:nrow(adzuna_api_returns_14jul23)) {
+test6 <- execute_scrape_and_prompt(adzuna_api_returns_14jul23$website[1])
+test7 <- c()
+
+fromJSON(test6) %>% as_tibble() %>% unnest(cols = c(skills)) %>% pull(skills)
+
+for (i in 1:length(test6)) {
+  test7 <- c(test7, fromJSON(test6)[[]])
+}
+
+for (i in 3:4) {
   try({   ###The try function is here in case any web scrape fails
     json_return <- execute_scrape_and_prompt(
-      adzuna_api_returns_14jul23$website[i])
-      job_details <- append(job_details, fromJSON(json_return))
+      adzuna_api_returns_14jul23$website[i]
+      )
+    skills_from_return <- json_return %>%
+      fromJSON() %>%
+      as_tibble() %>%
+      unnest(cols = c(skills)) %>%
+      pull(skills) ##This will flatten the information on tech, soft skills and qualifications. Having said that: 1) reviewing the test data, GPT got confused a lot of time about those; 2) We don't strictly need those.
+    
+    skills <- c(skills, skills_from_return)
   }, silent = TRUE
   )
   
@@ -292,11 +308,14 @@ for (i in 1:nrow(adzuna_api_returns_14jul23)) {
 
 write_rds(job_details, "job_details_14jul23.rds")
 
+skills
 ```
-```{r}
-adzuna_api_returns_14jul23$website[i]
-json_return
 
-```
+
+## Clean the data I: 
+
+
+
+
 
 
