@@ -1,0 +1,7 @@
+"0","## Test the function"
+"0","test <- get_adzuna_api("
+"0","  readLines(""/home/pete/Documents/adzuna_api.txt"")[1], "
+"0","  readLines(""/home/pete/Documents/adzuna_api.txt"")[2], 10)"
+"2","Error in get_adzuna_api(readLines(""/home/pete/Documents/adzuna_api.txt"")[1],  : 
+  could not find function ""get_adzuna_api""
+"

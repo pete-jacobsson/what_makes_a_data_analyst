@@ -1,0 +1,7 @@
+"0","    json_return <- execute_scrape_and_prompt(
+      adzuna_api_returns_14jul23$website[6]
+      ) %>%
+      fromJSON()
+"
+"2","Error in open.connection(x, ""rb"") : HTTP error 404.
+"

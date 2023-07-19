@@ -190,7 +190,7 @@ print(adzuna_description)
 
 def summarize_adzuna(adzuna_description):
   adzuna_summary = get_completion(
-    "Dear Chat GPT, could you please conduct the following actions on the test in square brackets: Identify all skills, characteristics and qualifications        required for the job and return them as itemized points in English. Split those into individual skills. Group into soft skills, technical skills and qualifications. Provide the return in JSON format please! [" + adzuna_description +"]"
+    "Dear Chat GPT, could you please conduct the following actions on the test in square brackets: Identify all skills, characteristics and qualifications        required for the job and return them as itemized points in English. Split those into individual skills, with no more than two words per skill. Provide the return in JSON format please! [" + adzuna_description +"]"
   )
   return(adzuna_summary)
 
@@ -279,40 +279,49 @@ Now that the wrapper is written and tested, lets run the extraction loop
 adzuna_api_returns_14jul23 <- readRDS("adzuna_api_returns_14jul23.rds")
 skills <- c()
 
-test6 <- execute_scrape_and_prompt(adzuna_api_returns_14jul23$website[1])
-test7 <- c()
-
-fromJSON(test6) %>% as_tibble() %>% unnest(cols = c(skills)) %>% pull(skills)
-
-for (i in 1:length(test6)) {
-  test7 <- c(test7, fromJSON(test6)[[]])
-}
-
-for (i in 3:4) {
+for (i in 1:6) {
+  
   try({   ###The try function is here in case any web scrape fails
     json_return <- execute_scrape_and_prompt(
       adzuna_api_returns_14jul23$website[i]
-      )
-    skills_from_return <- json_return %>%
-      fromJSON() %>%
-      as_tibble() %>%
-      unnest(cols = c(skills)) %>%
-      pull(skills) ##This will flatten the information on tech, soft skills and qualifications. Having said that: 1) reviewing the test data, GPT got confused a lot of time about those; 2) We don't strictly need those.
-    
-    skills <- c(skills, skills_from_return)
+      ) %>%
+      fromJSON()
+
   }, silent = TRUE
   )
+  
+  if (is.logical(json_return)) {  ##If JSON return is logical, it means that something above failed, so we want to have an empty entry
+    skills_from_return <- c()
+    } else {
+    skills_from_return <- unlist(json_return)
+    }
+  
+  skills <- c(skills, skills_from_return)
+  json_return <- TRUE ### Keep the return empty in case a webscrape or GPT call fails - we don't want to double record same entry
   
   Sys.sleep(30) ## Given the time to webscrape and call GPT this should be redundant... but lets be polite.
 }
 
-write_rds(job_details, "job_details_14jul23.rds")
+write_rds(skills, "skills_14jul23.rds")
 
-skills
+skills <- unlist(skills)
+
 ```
 
 
-## Clean the data I: 
+## Clean the data I: Address multi-element keywords
+
+Chat GPT is very human like. Not only can it hold a conversation, tell tales of pink unicorns, but also it makes a mess of data entry. Lets explore how much of a mess it made when summarizing the job descriptions from web scraping.
+
+```{r}
+skills_df <- data.frame(skills = skills) %>%
+  group_by(skills) %>%
+  summarize(
+    keyword_count = n()
+  ) %>%
+  arrange(desc(keyword_count))
+```
+
 
 
 

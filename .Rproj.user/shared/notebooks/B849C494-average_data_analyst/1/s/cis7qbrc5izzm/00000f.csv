@@ -1,7 +1,7 @@
 "0",""
 "0","def summarize_adzuna(adzuna_description):"
 "0","  adzuna_summary = get_completion("
-"0","    ""Dear Chat GPT, could you please conduct the following actions on the test in square brackets: Identify all skills, characteristics and qualifications        required for the job and return them as itemized points in English. Split those into individual skills. Group into soft skills, technical skills and qualifications. Provide the return in JSON format please! ["" + adzuna_description +""]"""
+"0","    ""Dear Chat GPT, could you please conduct the following actions on the test in square brackets: Identify all skills, characteristics and qualifications        required for the job and return them as itemized points in English. Split those into individual skills, with no more than two words per skill. Provide the return in JSON format please! ["" + adzuna_description +""]"""
 "0","  )"
 "0","  return(adzuna_summary)"
 "0","  "

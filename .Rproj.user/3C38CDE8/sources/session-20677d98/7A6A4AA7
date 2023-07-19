@@ -1,0 +1,28 @@
+{
+    "id": "7A6A4AA7",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1689772655127.0,
+    "source_on_save": false,
+    "relative_order": 9,
+    "properties": {
+        "id": "91dd587fa7b44284b02b2fe1a7881c82",
+        "name": "json_return",
+        "title": "json_return",
+        "language": "R",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1689772210,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1689772655127,
+    "read_only": false,
+    "read_only_alternatives": []
+}
