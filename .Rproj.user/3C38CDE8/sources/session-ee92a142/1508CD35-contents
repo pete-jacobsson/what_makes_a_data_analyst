@@ -60,7 +60,7 @@ get_adzuna_api <- function(api_id, api_key, page,
 ## Test the function
 test <- get_adzuna_api(
   readLines("/home/pete/Documents/adzuna_api.txt")[1], 
-  readLines("/home/pete/Documents/adzuna_api.txt")[2], 10)
+  readLines("/home/pete/Documents/adzuna_api.txt")[2], 2)
 
 
 test$location$display_name
@@ -230,7 +230,7 @@ As we do not know in advance how many relevant API pages there are in advance, h
 
 n_responses <- 20 ## Lets not turn off the loop before we start
 page <- 1 ## Start at page 1
-adzuna_api_returns_14jul23 <- data.frame()  ##Take note of date when responses collected
+adzuna_api_returns_20jul23 <- data.frame()  ##Take note of date when responses collected
 
 while (n_responses > 0) {
   
@@ -243,7 +243,7 @@ while (n_responses > 0) {
   
   current_response <- clean_adzuna_response(current_response) ## Different API returns give different numbers of columns. This should standardize and prevent crashes.
   
-  adzuna_api_returns_14jul23 <- rbind(adzuna_api_returns_14jul23,
+  adzuna_api_returns_20jul23 <- rbind(adzuna_api_returns_20jul23,
                                           current_response) ## Bind to general results table.
   
   Sys.sleep(3) ##This is to make sure that we do not hit the 25 hits per minute limit on the API.
@@ -253,7 +253,7 @@ while (n_responses > 0) {
 
 So this ended in a crash-out when the API returned empty. Normally this would be a bad things, but at this stage all I needed was the loop to finish - which it did. We now have a data frame containing some basic data on the jobs: date posted, job title, company name, location within Switzerland and... the link to the description, all ready for scraping. Now lets set up the reminder of the pipeline. Before moving on, lets save the results.
 ```{r}
-write_rds(adzuna_api_returns_14jul23, "adzuna_api_returns_14jul23.rds") ## Getting to use RDS format a bit more often.
+write_rds(adzuna_api_returns_20jul23, "adzuna_api_returns_20jul23.rds") ## Getting to use RDS format a bit more often.
 ```
 
 
@@ -277,13 +277,22 @@ test5
 Now that the wrapper is written and tested, lets run the extraction loop
 ```{r}
 adzuna_api_returns_14jul23 <- readRDS("adzuna_api_returns_14jul23.rds")
+adzuna_api_returns_20jul23 <- readRDS("adzuna_api_returns_20jul23.rds")
+
+adzuna_api_returns <- rbind(adzuna_api_returns_14jul23, 
+                            adzuna_api_returns_20jul23) %>%
+  distinct()
+
+```
+
+```{r}
 skills <- c()
 
-for (i in 1:6) {
+for (i in 1:nrow(adzuna_api_returns)) {
   
   try({   ###The try function is here in case any web scrape fails
     json_return <- execute_scrape_and_prompt(
-      adzuna_api_returns_14jul23$website[i]
+      adzuna_api_returns$website[i]
       ) %>%
       fromJSON()
 
@@ -302,7 +311,7 @@ for (i in 1:6) {
   Sys.sleep(30) ## Given the time to webscrape and call GPT this should be redundant... but lets be polite.
 }
 
-write_rds(skills, "skills_14jul23.rds")
+write_rds(skills, "adzuna_skills.rds")
 
 skills <- unlist(skills)
 

@@ -1,0 +1,27 @@
+"0","while (n_responses > 0) {
+  
+  current_response <- get_adzuna_api(
+    readLines(""/home/pete/Documents/adzuna_api.txt"")[1], 
+    readLines(""/home/pete/Documents/adzuna_api.txt"")[2], page) ##Run the API.
+  
+  page <- page + 1 #Increase the page number.
+  n_responses <-nrow(current_response) ## Check response count for the purposes of running the loop.
+  
+  current_response <- clean_adzuna_response(current_response) ## Different API returns give different numbers of columns. This should standardize and prevent crashes.
+  
+  adzuna_api_returns_20jul23 <- rbind(adzuna_api_returns_20jul23,
+                                          current_response) ## Bind to general results table.
+  
+  Sys.sleep(3) ##This is to make sure that we do not hit the 25 hits per minute limit on the API.
+}
+"
+"1","[1m[33mError[39m in `filter()`:[22m
+[38;5;232m[36mℹ[38;5;232m In argument: `str_detect(website, ""details"")`.[39m
+[1mCaused by error in `vctrs::vec_size_common()`:[22m
+[33m![39m object 'website' not found
+Backtrace:
+[90m  1. [39m[1mglobal[22m clean_adzuna_response(current_response)
+[90m 10. [39m[1mstringr[22m::str_detect(website, ""details"")
+[90m 11. [39mstringr:::check_lengths(string, pattern)
+[90m 12. [39m[1mvctrs[22m::vec_size_common(...)
+"
