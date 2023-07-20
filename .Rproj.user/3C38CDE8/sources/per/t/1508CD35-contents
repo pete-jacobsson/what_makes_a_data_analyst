@@ -288,8 +288,10 @@ adzuna_api_returns <- rbind(adzuna_api_returns_14jul23,
 ```{r}
 skills <- c()
 
+
 for (i in 1:nrow(adzuna_api_returns)) {
   
+  json_return <- TRUE ### Keep the return empty in case a webscrape or GPT call fails - we don't want to double record same entry
   try({   ###The try function is here in case any web scrape fails
     json_return <- execute_scrape_and_prompt(
       adzuna_api_returns$website[i]
@@ -313,7 +315,6 @@ for (i in 1:nrow(adzuna_api_returns)) {
 
 write_rds(skills, "adzuna_skills.rds")
 
-skills <- unlist(skills)
 
 ```
 
@@ -324,6 +325,7 @@ Chat GPT is very human like. Not only can it hold a conversation, tell tales of 
 
 ```{r}
 skills_df <- data.frame(skills = skills) %>%
+  mutate(skills = str_to_lower(skills)) %>%
   group_by(skills) %>%
   summarize(
     keyword_count = n()

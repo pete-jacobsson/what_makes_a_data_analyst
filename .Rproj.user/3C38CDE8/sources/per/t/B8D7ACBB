@@ -12,13 +12,13 @@
     "properties": {
         "expression": "skills_df",
         "caption": "skills_df",
-        "totalObservations": "132",
-        "displayedObservations": "132",
+        "totalObservations": "1499",
+        "displayedObservations": "1499",
         "variables": "2",
-        "cacheKey": "90064D47",
+        "cacheKey": "198F73F4",
         "object": "skills_df",
         "environment": "",
-        "contentUrl": "grid_resource/gridviewer.html?env=&obj=skills_df&cache_key=90064D47&max_cols=50",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=skills_df&cache_key=198F73F4&max_cols=50",
         "preview": "0",
         "source_window_id": "",
         "Source": "Source"
