@@ -1,0 +1,28 @@
+{
+    "id": "ACE045EC",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1690208010532.0,
+    "source_on_save": false,
+    "relative_order": 10,
+    "properties": {
+        "id": "032ccee2d5ac44a4bbb43cecd3d9a4b6",
+        "name": "skills_review_command",
+        "title": "skills_review_command",
+        "language": "Python",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1690207823,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1690208010532,
+    "read_only": false,
+    "read_only_alternatives": []
+}

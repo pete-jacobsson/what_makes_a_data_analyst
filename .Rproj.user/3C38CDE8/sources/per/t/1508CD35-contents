@@ -324,6 +324,8 @@ write_rds(skills, "adzuna_skills.rds")
 Chat GPT is very human like. Not only can it hold a conversation, tell tales of pink unicorns, but also it makes a mess of data entry. Lets explore how much of a mess it made when summarizing the job descriptions from web scraping.
 
 ```{r}
+skills <- read_rds("adzuna_skills.rds")
+
 skills_df <- data.frame(skills = skills) %>%
   mutate(skills = str_to_lower(skills)) %>%
   group_by(skills) %>%
@@ -333,7 +335,31 @@ skills_df <- data.frame(skills = skills) %>%
   arrange(desc(keyword_count))
 ```
 
+Here we can see that GPT ended up being fairly inconsistent with its naming for skills and chracteristics. For example PowerBI comes in twice, and fluency in English, sometimes is English fluency.
 
+Just like with a real research assistant, we can ask GPT to review and consolidate.
+
+```{python}
+skills_review_command = "Please review the list provided in brackets, identify synonymous items, standardize them, and return a comma seperated string ["
+
+skills_list = str(r.skills)
+len(skills_list)
+
+skills_list_1 = skills_list[0:10000]
+skills_list_2 = skills_list[10001:20000]
+skills_list_3 = skills_list[20001:30000]
+skills_list_4 = skills_list[30001:40000]
+skills_list_5 = skills_list[40001:51347]
+
+skills_review_command = skills_review_command + skills_list_1 + "]"
+
+reviewed_skills = get_completion(skills_review_command)
+
+```
+
+```{python}
+reviewed_skills
+```
 
 
 

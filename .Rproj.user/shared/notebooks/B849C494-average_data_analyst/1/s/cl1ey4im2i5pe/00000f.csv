@@ -5,3 +5,5 @@
 "0","    keyword_count = n()"
 "0","  ) %>%"
 "0","  arrange(desc(keyword_count))"
+"2","Error in data.frame(skills = skills) : object 'skills' not found
+"
