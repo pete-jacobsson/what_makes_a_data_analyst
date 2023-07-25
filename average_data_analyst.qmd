@@ -324,10 +324,10 @@ write_rds(skills, "adzuna_skills.rds")
 Chat GPT is very human like. Not only can it hold a conversation, tell tales of pink unicorns, but also it makes a mess of data entry. Lets explore how much of a mess it made when summarizing the job descriptions from web scraping.
 
 ```{r}
-skills <- read_rds("adzuna_skills.rds")
+skills <- read_rds("adzuna_skills.rds") %>%
+  str_to_lower()
 
 skills_df <- data.frame(skills = skills) %>%
-  mutate(skills = str_to_lower(skills)) %>%
   group_by(skills) %>%
   summarize(
     keyword_count = n()
@@ -335,23 +335,86 @@ skills_df <- data.frame(skills = skills) %>%
   arrange(desc(keyword_count))
 ```
 
+
+Given the size of the skills string, calling GPT again to resolve is not actually viable (I tried). Instead, we can extract the key categories with some old fashioned cleaning.
+
+We can start by reviewing thelist above and finding some patterns to search for. This will be a manual process, but it will help filter out anything not immediately relevant, or things not applicable in my particular case (e.g. some HR jobs seem to have found their way into the selection).
+
+The list of string to search for is quite long (40+ items to consolidate). The selection contains items that can be found repeating throughout the job decriptions (for example "analytical skills" makes multiple appearences under various guises - to catch it, I use the term "analyt"). Lets start making our way through it.
+
+```{r}
+## This will be easiest to do by looping over the key terms
+key_terms <- c("analy", "english", "german", "french", "italian",
+               "excel", "python", "flexib", "business", "power", "azure", "aws", 
+               "creativ", "curio", "detail", "communicat", "report", "tableau",
+               "data quality", "trend", "vba", "present", "project", "agile", 
+               "cloud", "compliance", "cooper|collab|team", "dashboard", "warehouse", 
+               "decision", "consulting", "sap", "data mana", "machine learn|ml",
+               "kpi", "leadership", "sql", "automation", "research", "reliab",
+               "rest|api", "stakeholder", "problem", "interpers", "(?<!\\w)r(?!\\w)"
+               )
+
+skills_df <- data.frame(key_terms = c(), count = c())
+
+for (term in key_terms) {
+  skill_count <- str_extract(skills, term) %>%
+    na.omit() %>%
+    length()
+  
+  skills_df <- skills_df %>%
+    rbind(c(term, skill_count))
+  
+}
+
+skills_df <- skills_df %>%
+  rename(
+    term =  1, count = 2
+  ) %>%
+  mutate(count = as.numeric(count)) %>% ##Note count got converted to chr silently in the previous step
+  arrange(desc(count))
+
+
+```
+
+
+
+
+
+Lets start with getting languages out of strings.
+
+```{r}
+language_skills <- str_extract(
+  skills, "english|german|french|italian|russian|chinese|hindi|japanese|arabic") %>% ## Added most popular languages.
+  na.omit()
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 Here we can see that GPT ended up being fairly inconsistent with its naming for skills and chracteristics. For example PowerBI comes in twice, and fluency in English, sometimes is English fluency.
 
 Just like with a real research assistant, we can ask GPT to review and consolidate.
 
 ```{python}
-skills_review_command = "Please review the list provided in brackets, identify synonymous items, standardize them, and return a comma seperated string ["
+skills_review_command = "Please review the list provided in brackets, identify synonymous items, and standardize them ["
 
-skills_list = str(r.skills)
+skills_list = r.skills
 len(skills_list)
 
-skills_list_1 = skills_list[0:10000]
-skills_list_2 = skills_list[10001:20000]
-skills_list_3 = skills_list[20001:30000]
-skills_list_4 = skills_list[30001:40000]
-skills_list_5 = skills_list[40001:51347]
+skills_review_command = skills_review_command + str(skills_list) + "]"
 
-skills_review_command = skills_review_command + skills_list_1 + "]"
+len(skills_review_command)
 
 reviewed_skills = get_completion(skills_review_command)
 
