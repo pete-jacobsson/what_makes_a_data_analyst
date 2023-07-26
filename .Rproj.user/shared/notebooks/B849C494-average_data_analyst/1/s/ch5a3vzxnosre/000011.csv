@@ -1,3 +1,0 @@
-"0","language_skills <- str_extract("
-"0","  skills, ""english|german|french|italian|russian|chinese|hindi|japanese|arabic"") %>% ## Added most popular languages."
-"0","  na.omit()"

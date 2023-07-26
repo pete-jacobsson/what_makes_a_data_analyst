@@ -1,7 +1,0 @@
-"0","str_extract(skills, ""analy"") %>%
-  na.omit() %>% length()
-"
-"1","[1]"
-"1"," 165"
-"1","
-"
