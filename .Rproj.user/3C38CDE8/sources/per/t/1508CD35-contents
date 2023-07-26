@@ -390,7 +390,7 @@ skills_df <- skills_df %>%
       term == "excel" ~ "Excel",
       term == "python" ~ "Python",
       term == "flexib" ~ "Flexible",
-      term == "business" ~ "Business",
+      term == "business" ~ "Business awareness",
       term == "power" ~ "Power BI",
       term == "azure" ~ "Azure",
       term == "aws" ~ "AWS",
@@ -414,7 +414,7 @@ skills_df <- skills_df %>%
       term == "decision" ~ "Decision making experience",
       term == "consulting" ~ "Consulting experience",
       term == "sap" ~ "SAP",
-      term == "data mana" ~ "data management",
+      term == "data mana" ~ "Data management",
       term == "machine learn|ml" ~ "Machine learning skills",
       term == "kpi" ~ "KPIs",
       term == "leadership" ~ "Leadership",
@@ -435,6 +435,32 @@ skills_df <- skills_df %>%
 
 ## Visualize the data
 
+```{r}
+skills_df %>%
+  head(30) %>%
+  mutate(
+    term = as_factor(term)
+  ) %>%
+  filter(term != "Analytics") %>% ### This category is largest - which makes sense, but we know it from the job description :)
+  ggplot(aes(x = fct_infreq(term), y = count)) +
+  geom_bar(stat = 'identity', fill = "steelblue", color = "grey20") +
+  coord_flip() +
+  scale_x_discrete(limits = rev) +
+  theme_bw() +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.border = element_blank(),
+    axis.line = element_line(colour = "grey50", size = 0.5),
+    text = element_text(family = "Corbel")#,
+    #axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size = 9)
+    ) +
+  labs(
+    x = "GPT-detected keyword",
+    y = "Count"
+  )
+  
+```
 
 
 
