@@ -346,12 +346,12 @@ The list of string to search for is quite long (40+ items to consolidate). The s
 ## This will be easiest to do by looping over the key terms
 key_terms <- c("analy", "english", "german", "french", "italian",
                "excel", "python", "flexib", "business", "power", "azure", "aws", 
-               "creativ", "curio", "detail", "communicat", "report", "tableau",
-               "data quality", "trend", "vba", "present", "project", "agile", 
-               "cloud", "compliance", "cooper|collab|team", "dashboard", "warehouse", 
+               "creativ", "curio", "detail", "communicat|present", "report", "tableau",
+               "data quality", "trend", "vba", "project", "agile", 
+               "cloud", "compliance", "cooper|collab|team|interpers", "dashboard", "warehouse", 
                "decision", "consulting", "sap", "data mana", "machine learn|ml",
                "kpi", "leadership", "sql", "automation", "research", "reliab",
-               "rest|api", "stakeholder", "problem", "interpers", "(?<!\\w)r(?!\\w)",
+               "rest|api", "stakeholder", "problem", "(?<!\\w)r(?!\\w)",
                "logist"
                )
 
@@ -397,18 +397,17 @@ skills_df <- skills_df %>%
       term == "creativ" ~ "Creativity",
       term == "curio" ~ "Curiosity",
       term == "detail" ~ "Attention to detail",
-      term == "communicat" ~ "Communication skills",
+      term == "communicat|present" ~ "Communication and presentation skills",
       term == "report" ~ "Reporting experience",
       term == "tableau" ~ "Tableu",
       term == "data quality" ~ "Data quality management",
       term == "trend" ~ "Tren analysis",
       term == "vba" ~ "VBA",
-      term == "present" ~ "Presentation skills",
       term == "project" ~ "Project management",
       term == "agile" ~ "Agile",
       term == "cloud" ~ "Cloud",
       term == "compliance" ~ "Compliance",
-      term == "cooper|collab|team" ~ "Collaboration and teamwork",
+      term == "cooper|collab|team|interpers" ~ "Interpersonal and collaboration skills",
       term == "dashboard" ~ "Dashboard design",
       term == "warehouse" ~ "Data warehouse experience",
       term == "decision" ~ "Decision making experience",
@@ -425,7 +424,6 @@ skills_df <- skills_df %>%
       term == "rest|api" ~ "API skills",
       term == "stakeholder" ~ "Stakeholder management",
       term == "problem" ~ "Problem solving",
-      term == "interpers" ~ "Interpersonal skills",
       term == "(?<!\\w)r(?!\\w)" ~ "R",
       term == "logist" ~ "Logistics"
     )
@@ -462,7 +460,17 @@ skills_df %>%
   
 ```
 
+Rough observations on the results:
+* Expected; Core soft skills and business awareness up top
+* Python and SQL come up as the two core hard skills
+* German/English language dominance
+* Continuing reliance on Excel
 
+Surprises:
+* Low rating for Curiosity - prefer hire for dashboard design not for drive for wanting knowledge. Omitted key trait, or is it unprovable.
+* Low Power BI/Tableau rating. While these are promoted as key data analyst tools, they trail behind SQL and Python. Could be quirk of data, the Adzuna job board, or anything else - still a flag that mirrors some of personal ad-hoc Linked in views. They trail behind ML, or a combination of more traditionally IT fields, such as Cloud expertise.
+* API skills show up at analyst level.
+* Low ranking of research experience!!!
 
 
 
