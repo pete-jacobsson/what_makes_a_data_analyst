@@ -1,0 +1,7 @@
+"0","adzuna_api_returns_14jul23 <- readRDS(""adzuna_api_returns_14jul23.rds"")"
+"0","adzuna_api_returns_20jul23 <- readRDS(""adzuna_api_returns_20jul23.rds"")"
+"0",""
+"0","adzuna_api_returns <- rbind(adzuna_api_returns_14jul23, "
+"0","                            adzuna_api_returns_20jul23) %>%"
+"0","  distinct()"
+"0",""

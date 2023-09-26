@@ -471,6 +471,7 @@ Surprises:
 * Low Power BI/Tableau rating. While these are promoted as key data analyst tools, they trail behind SQL and Python. Could be quirk of data, the Adzuna job board, or anything else - still a flag that mirrors some of personal ad-hoc Linked in views. They trail behind ML, or a combination of more traditionally IT fields, such as Cloud expertise.
 * API skills show up at analyst level.
 * Low ranking of research experience!!!
+* Low ranking of data management skills
 
 
 

@@ -79,7 +79,7 @@ clean_adzuna_response <- function(adzuna_response) {
     company = adzuna_response$company$display_name,
     location = adzuna_response$location$display_name,
     website = adzuna_response$redirect_url
-  ) %>%
+  ) |>
     filter(str_detect(website, "details")) #Adzuna links quite a few instances of external job boards
   
   
@@ -110,8 +110,8 @@ test2$website[4]
 
 parse_adzuna_data <- function (adzuna_http){
   adzuna_html_response <- read_html(adzuna_http) #Get the website
-  adzuna_body <- adzuna_html_response %>% #Extract the body of the job ad
-    html_nodes(".adp-body") %>%
+  adzuna_body <- adzuna_html_response |> #Extract the body of the job ad
+    html_nodes(".adp-body") |>
     html_text()
   
   adzuna_body
@@ -280,7 +280,7 @@ adzuna_api_returns_14jul23 <- readRDS("adzuna_api_returns_14jul23.rds")
 adzuna_api_returns_20jul23 <- readRDS("adzuna_api_returns_20jul23.rds")
 
 adzuna_api_returns <- rbind(adzuna_api_returns_14jul23, 
-                            adzuna_api_returns_20jul23) %>%
+                            adzuna_api_returns_20jul23) |>
   distinct()
 
 ```
@@ -295,7 +295,7 @@ for (i in 1:nrow(adzuna_api_returns)) {
   try({   ###The try function is here in case any web scrape fails
     json_return <- execute_scrape_and_prompt(
       adzuna_api_returns$website[i]
-      ) %>%
+      ) |>
       fromJSON()
 
   }, silent = TRUE
@@ -324,14 +324,14 @@ write_rds(skills, "adzuna_skills.rds")
 Chat GPT is very human like. Not only can it hold a conversation, tell tales of pink unicorns, but also it makes a mess of data entry. Lets explore how much of a mess it made when summarizing the job descriptions from web scraping.
 
 ```{r}
-skills <- read_rds("adzuna_skills.rds") %>%
+skills <- read_rds("adzuna_skills.rds") |>
   str_to_lower()
 
-skills_df <- data.frame(skills = skills) %>%
-  group_by(skills) %>%
+skills_df <- data.frame(skills = skills) |>
+  group_by(skills) |>
   summarize(
     keyword_count = n()
-  ) %>%
+  ) |>
   arrange(desc(keyword_count))
 ```
 
@@ -358,20 +358,20 @@ key_terms <- c("analy", "english", "german", "french", "italian",
 skills_df <- data.frame(key_terms = c(), count = c())
 
 for (term in key_terms) {
-  skill_count <- str_extract(skills, term) %>%
-    na.omit() %>%
+  skill_count <- str_extract(skills, term) |>
+    na.omit() |>
     length()
   
-  skills_df <- skills_df %>%
+  skills_df <- skills_df |>
     rbind(c(term, skill_count))
   
 }
 
-skills_df <- skills_df %>%
+skills_df <- skills_df |>
   rename(
     term =  1, count = 2
-  ) %>%
-  mutate(count = as.numeric(count)) %>% ##Note count got converted to chr silently in the previous step
+  ) |>
+  mutate(count = as.numeric(count)) |> ##Note count got converted to chr silently in the previous step
   arrange(desc(count))
 
 
@@ -379,7 +379,7 @@ skills_df <- skills_df %>%
 
 ```{r}
 ###Transform abbreviations back to human readables
-skills_df <- skills_df %>%
+skills_df <- skills_df |>
   mutate(
     term = case_when(   ### I could have used the default here to just focus on the terms that needed mending, but I decided I wanted nice, standardized names on the graph.
       term == "analy" ~ "Analytics",
@@ -428,18 +428,22 @@ skills_df <- skills_df %>%
       term == "logist" ~ "Logistics"
     )
   )
+
+write_csv(skills_df, "skills_df.csv")
 ```
 
 
 ## Visualize the data
 
 ```{r}
-skills_df %>%
-  head(30) %>%
+skills_df <- read_csv("skills_df.csv")
+
+skills_df |>
+  head(28) |>
   mutate(
     term = as_factor(term)
-  ) %>%
-  filter(term != "Analytics") %>% ### This category is largest - which makes sense, but we know it from the job description :)
+  ) |>
+  filter(term != "Analytics") |> ### This category is largest - which makes sense, but we know it from the job description :)
   ggplot(aes(x = fct_infreq(term), y = count)) +
   geom_bar(stat = 'identity', fill = "steelblue", color = "grey20") +
   coord_flip() +
@@ -471,6 +475,7 @@ Surprises:
 * Low Power BI/Tableau rating. While these are promoted as key data analyst tools, they trail behind SQL and Python. Could be quirk of data, the Adzuna job board, or anything else - still a flag that mirrors some of personal ad-hoc Linked in views. They trail behind ML, or a combination of more traditionally IT fields, such as Cloud expertise.
 * API skills show up at analyst level.
 * Low ranking of research experience!!!
+* Low ranking of data management skills
 
 
 
